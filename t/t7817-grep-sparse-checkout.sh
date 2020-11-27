@@ -77,7 +77,8 @@ test_expect_success 'setup' '
 	test_path_is_missing sub/A &&
 	test_path_is_file a &&
 	test_path_is_file sub/B/b &&
-	test_path_is_file sub2/a
+	test_path_is_file sub2/a &&
+	git branch -m main
 '
 
 # The two tests below check a special case: the sparsity patterns exclude '/b'
@@ -110,12 +111,12 @@ test_expect_success 'grep unmerged file despite not matching sparsity patterns' 
 	b:modified-b-in-branchY
 	EOF
 	test_when_finished "test_might_fail git merge --abort && \
-			    git checkout master" &&
+			    git checkout main" &&
 
 	git sparse-checkout disable &&
-	git checkout -b branchY master &&
+	git checkout -b branchY main &&
 	test_commit modified-b-in-branchY b &&
-	git checkout -b branchX master &&
+	git checkout -b branchX main &&
 	test_commit modified-b-in-branchX b &&
 
 	git sparse-checkout init &&
